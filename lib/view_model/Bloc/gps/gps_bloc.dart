@@ -37,6 +37,7 @@ class GpsBloc extends Bloc<GpsEvent, GpsState> {
           isLocationEnabled: event,
           isLocationPermissionGranted: state.isLocationPermissionGranted));
       });
+    
   }
 
   Future<void> askForPermission()async{
