@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:fastdrive/view_model/Bloc/gps/gps_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,7 +11,6 @@ class ScreenGpsPermission extends StatelessWidget {
       body: Center(
         child: BlocBuilder<GpsBloc, GpsState>(
           builder: (context, state) {
-            log(state.toString());
             return !state.isLocationEnabled
              ?const _TurnOnLocation()
              :const _AskforGPSpermission();
@@ -41,6 +38,9 @@ class _AskforGPSpermission extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final gpsBloc = context.read<GpsBloc>();
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -55,7 +55,9 @@ class _AskforGPSpermission extends StatelessWidget {
             color: Colors.white
           )
           ),
-          onPressed: (){})
+          onPressed: () async{
+            await gpsBloc.askForPermission();
+          })
       ],
     );
   }

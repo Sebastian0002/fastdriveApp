@@ -5,6 +5,7 @@ sealed class GpsState extends Equatable {
   final bool isLocationEnabled;
   final bool isLocationPermissionGranted;
 
+  bool get isAllGranted => isLocationEnabled && isLocationPermissionGranted;
   
   const GpsState({
     required this.isLocationEnabled, 

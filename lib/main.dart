@@ -19,7 +19,7 @@ class FastDriveApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: ScreenGpsPermission()
+      home: ScreenLoading()
     );
   }
 }
