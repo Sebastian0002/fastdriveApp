@@ -2,34 +2,34 @@ part of 'gps_bloc.dart';
 
 sealed class GpsState extends Equatable {
   
-  final bool isLocationEnabled;
-  final bool isLocationPermissionGranted;
+  final bool isGpsEnabled;
+  final bool isGpsPermissionGranted;
 
-  bool get isAllGranted => isLocationEnabled && isLocationPermissionGranted;
+  bool get isAllGranted => isGpsEnabled && isGpsPermissionGranted;
   
   const GpsState({
-    required this.isLocationEnabled, 
-    required this.isLocationPermissionGranted
+    required this.isGpsEnabled, 
+    required this.isGpsPermissionGranted
   });
 
   GpsState copyWhit({
-    bool ? isLocationEnabled,
-    bool ? isLocationPermissionGranted
+    bool ? isGpsEnabled,
+    bool ? isGpsPermissionGranted
   }) => GpsInitState(
-    isLocationEnabledinitial: isLocationEnabled ?? this.isLocationEnabled,
-    isLocationPermissionGrantedinitial: isLocationPermissionGranted ?? this.isLocationPermissionGranted);
+    isGpsEnabledinitial: isGpsEnabled ?? this.isGpsEnabled,
+    isGpsPermissionGrantedinitial: isGpsPermissionGranted ?? this.isGpsPermissionGranted);
 
   @override
-  String toString() => "{isLocationEnabled: $isLocationEnabled, isLocationPermissionGranted: $isLocationPermissionGranted}";
+  String toString() => "{isLocationEnabled: $isGpsEnabled, isLocationPermissionGranted: $isGpsPermissionGranted}";
 
   @override
-  List<Object> get props => [isLocationEnabled, isLocationPermissionGranted];
+  List<Object> get props => [isGpsEnabled, isGpsPermissionGranted];
 }
 
 class GpsInitState extends GpsState{
-  final bool? isLocationEnabledinitial;
-  final bool? isLocationPermissionGrantedinitial;
+  final bool? isGpsEnabledinitial;
+  final bool? isGpsPermissionGrantedinitial;
 
-  const GpsInitState({this.isLocationEnabledinitial, this.isLocationPermissionGrantedinitial}) : 
-    super(isLocationEnabled: isLocationEnabledinitial ?? false, isLocationPermissionGranted: isLocationPermissionGrantedinitial ?? false);
+  const GpsInitState({this.isGpsEnabledinitial, this.isGpsPermissionGrantedinitial}) : 
+    super(isGpsEnabled: isGpsEnabledinitial ?? false, isGpsPermissionGranted: isGpsPermissionGrantedinitial ?? false);
 }

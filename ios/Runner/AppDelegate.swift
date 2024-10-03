@@ -1,6 +1,7 @@
 import Flutter
 import UIKit
 import CoreLocation
+import GoogleMaps
 
 @main
 @objc class AppDelegate: FlutterAppDelegate, FlutterStreamHandler, CLLocationManagerDelegate{
@@ -12,6 +13,8 @@ import CoreLocation
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
+        
+        GMSServices.provideAPIKey("AIzaSyBXfOX3sNQh9dAjsDSuQxQVVWyPyboa0vw")
         GeneratedPluginRegistrant.register(with: self)
         
         guard let controller = window?.rootViewController as? FlutterViewController else {
@@ -50,19 +53,13 @@ import CoreLocation
     }
 
     func onListen(withArguments arguments: Any?, eventSink events: @escaping FlutterEventSink) -> FlutterError? {
-        if let argument = arguments as? String, argument == "permissions" {
             self.permissionEventSink = events
             checkLocationPermissions()
-        } 
         return nil
     }
 
     func onCancel(withArguments arguments: Any?) -> FlutterError? {
-        if let argument = arguments as? String {
-            if argument == "permissions" {
-                self.permissionEventSink = nil
-            }
-        }
+        self.permissionEventSink = nil
         return nil
     }
 }

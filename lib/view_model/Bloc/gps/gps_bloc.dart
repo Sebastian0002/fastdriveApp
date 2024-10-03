@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -12,32 +13,49 @@ part 'gps_state.dart';
 class GpsBloc extends Bloc<GpsEvent, GpsState> {
   StreamSubscription? _subscriptionPermissionChannel;
   StreamSubscription? _subscriptionServicesChannel;
-  static const EventChannel _permissionsChannel = EventChannel("com.fastdrive.location/permissions");
-  static const String _permissionHandler = "permissions";
 
   GpsBloc() : super(const GpsInitState()) {
     on<GpsPermissionEvent>((event, emit) => emit(state.copyWhit(
-      isLocationEnabled: event.isLocationEnabled,
-      isLocationPermissionGranted: event.isLocationPermissionGranted
+      isGpsEnabled: event.isGpsEnabled,
+      isGpsPermissionGranted: event.isGpsPermissionGranted
     )));
     _init();
   }
 
   Future<void> _init ()async{
 
-   _subscriptionPermissionChannel = _permissionsChannel.receiveBroadcastStream(_permissionHandler).listen((event){
-        add(GpsPermissionEvent(
-          isLocationEnabled: state.isLocationEnabled,
-          isLocationPermissionGranted: event));
-      });
+    if(Platform.isAndroid){
+      final gpsInitStatus = await Future.wait([
+        _checkGpsStatus(),
+        _isPermissionGranted(),
+    ]);
+    add( GpsPermissionEvent(
+      isGpsEnabled: gpsInitStatus[0],
+      isGpsPermissionGranted: gpsInitStatus[1],
+    ));
+    }
 
-     _subscriptionServicesChannel = Geolocator.getServiceStatusStream().listen((data){
-        final bool event = data == ServiceStatus.enabled;
+    _LocationPermissions.listenToLocationPermissions((event){
         add(GpsPermissionEvent(
-          isLocationEnabled: event,
-          isLocationPermissionGranted: state.isLocationPermissionGranted));
-      });
-    
+        isGpsEnabled: state.isGpsEnabled,
+        isGpsPermissionGranted: event));
+    });
+
+    _subscriptionServicesChannel = Geolocator.getServiceStatusStream().listen((data){
+      final bool event = data == ServiceStatus.enabled;
+      add(GpsPermissionEvent(
+        isGpsEnabled: event,
+        isGpsPermissionGranted: state.isGpsPermissionGranted));
+    });
+  }
+
+  Future<bool> _checkGpsStatus() async {
+    final isEnable = await Geolocator.isLocationServiceEnabled();
+    return isEnable;  
+  }
+   Future<bool> _isPermissionGranted() async {
+    final isGranted = await permission.Permission.location.isGranted;
+    return isGranted;
   }
 
   Future<void> askForPermission()async{
@@ -45,14 +63,14 @@ class GpsBloc extends Bloc<GpsEvent, GpsState> {
 
     switch (res) {
       case permission.PermissionStatus.granted:
-        add(GpsPermissionEvent(isLocationEnabled: state.isLocationEnabled, isLocationPermissionGranted: true));
+        add(GpsPermissionEvent(isGpsEnabled: state.isGpsEnabled, isGpsPermissionGranted: true));
         break;
       case permission.PermissionStatus.denied:
       case permission.PermissionStatus.restricted:
       case permission.PermissionStatus.limited:
       case permission.PermissionStatus.permanentlyDenied:
       case permission.PermissionStatus.provisional:
-        add(GpsPermissionEvent(isLocationEnabled: state.isLocationEnabled, isLocationPermissionGranted: false));
+        add(GpsPermissionEvent(isGpsEnabled: state.isGpsEnabled, isGpsPermissionGranted: false));
         permission.openAppSettings();
     }
   }
@@ -63,5 +81,12 @@ class GpsBloc extends Bloc<GpsEvent, GpsState> {
     _subscriptionServicesChannel?.cancel();
     return super.close();
   }
+}
 
+class _LocationPermissions {
+  static const EventChannel _eventChannel = EventChannel('com.fastdrive.location/permissions');
+
+  static void listenToLocationPermissions(void Function(dynamic) onPermissionChanged) {
+    _eventChannel.receiveBroadcastStream().listen(onPermissionChanged);
+  }
 }

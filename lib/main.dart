@@ -1,12 +1,14 @@
 import 'package:fastdrive/view/pages/screens.dart';
-import 'package:fastdrive/view_model/Bloc/gps/gps_bloc.dart';
+import 'package:fastdrive/view_model/Bloc/blocs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() {
   runApp( MultiBlocProvider(
     providers: [
-      BlocProvider(create: (context) => GpsBloc())
+      BlocProvider(create: (context) => GpsBloc()),
+      BlocProvider(create: (context) => LocationBloc()),
+      BlocProvider(create: (context) => MapBloc()),
     ],
     child: const FastDriveApp(),
   ));

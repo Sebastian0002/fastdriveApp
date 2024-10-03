@@ -11,7 +11,7 @@ class ScreenGpsPermission extends StatelessWidget {
       body: Center(
         child: BlocBuilder<GpsBloc, GpsState>(
           builder: (context, state) {
-            return !state.isLocationEnabled
+            return !state.isGpsEnabled
              ?const _TurnOnLocation()
              :const _AskforGPSpermission();
           },

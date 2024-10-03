@@ -10,12 +10,12 @@ sealed class GpsEvent extends Equatable {
 
 class GpsPermissionEvent extends GpsEvent {
 
-  final bool? isLocationEnabled;
-  final bool? isLocationPermissionGranted;
+  final bool? isGpsEnabled;
+  final bool? isGpsPermissionGranted;
 
   const GpsPermissionEvent({
-    required this.isLocationEnabled, 
-    required this.isLocationPermissionGranted
+    required this.isGpsEnabled, 
+    required this.isGpsPermissionGranted
   });
 
 }
