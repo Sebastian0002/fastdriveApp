@@ -12,3 +12,13 @@ class OnMapInitEvent extends MapEvent{
   final GoogleMapController controller;
   const OnMapInitEvent({required this.controller});
 }
+
+class OnMapFollowingEvent extends MapEvent{
+  final bool isFollowing;
+  const OnMapFollowingEvent({required this.isFollowing});
+}
+
+class UpdatePolylinesEvent extends MapEvent{
+  final List<LatLng> userHistoryLocation;
+  const UpdatePolylinesEvent({required this.userHistoryLocation});
+}

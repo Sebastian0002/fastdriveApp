@@ -22,13 +22,12 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
     });
   }
 
-  Future getUserPosition () async{
-     final position = await Geolocator.getCurrentPosition();
-       add(OnNewLocationEvent(newLocation: LatLng(position.latitude, position.longitude)));
-  }
+  // Future getUserPosition () async{
+  //    final position = await Geolocator.getCurrentPosition();
+  //      add(OnNewLocationEvent(newLocation: LatLng(position.latitude, position.longitude)));
+  // }
 
   void startFollowingUser(){
-    add(const FollowingUserEvent(followingUser: true));
     const settings = LocationSettings(
       accuracy: LocationAccuracy.high, 
       distanceFilter: 10);
@@ -36,6 +35,7 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
     subscription = Geolocator.getPositionStream(locationSettings: settings).listen((event){
       add(OnNewLocationEvent(newLocation: LatLng(event.latitude, event.longitude)));
     });
+    add(const FollowingUserEvent(followingUser: true));
   }
   
   void stopFollowingUser(){

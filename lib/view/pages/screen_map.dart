@@ -1,4 +1,5 @@
-import 'package:fastdrive/view/widgets/map_widget.dart';
+import 'package:fastdrive/view/widgets/button_following_location.dart';
+import 'package:fastdrive/view/widgets/widgets.dart';
 import 'package:fastdrive/view_model/Bloc/blocs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,8 +12,7 @@ class ScreenMap extends StatefulWidget {
 }
 
 class _ScreenMapState extends State<ScreenMap> {
-
-  late LocationBloc bloc; 
+  late LocationBloc bloc;
 
   @override
   void initState() {
@@ -31,24 +31,40 @@ class _ScreenMapState extends State<ScreenMap> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocBuilder<LocationBloc, LocationState>(
-        builder: (context, state) {
-          
-          if(state.lastLocation == null ) {
-            return const Center(child: Text("Aguarde un momento"),);
+        builder: (context, locationState) {
+          if (locationState.lastLocation == null) {
+            return const Center(
+              child: Text("Aguarde un momento"),
+            );
           }
 
-          return SafeArea(
-            top: false,
-            child: Stack(
-              children: [
-                WidgetMap(location: state.lastLocation!),
-            
-                // Positioned(child: child)
-              ],
-            ),
+          return BlocBuilder<MapBloc, MapState>(
+            builder: (context, mapState) {
+              return SafeArea(
+                top: false,
+                child: SingleChildScrollView(
+                    child: Stack(
+                  children: [
+                    WidgetMap(
+                      location: locationState.lastLocation!,
+                      polylines: mapState.polylines.values.toSet(),
+                    ),
+                  ],
+                )),
+              );
+            },
           );
         },
-      )
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButton: const Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          ButtonFollowingLocation(),
+          SizedBox(height: 10),
+          ButtonCenterLocation(),
+        ],
+      ),
     );
   }
 }
