@@ -15,14 +15,14 @@ class WidgetMap extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final size  = MediaQuery.of(context).size;
-
     final mapBloc = context.read<MapBloc>();
 
     CameraPosition initialCameraPosition = CameraPosition(
       target: location,
       zoom: 15);
+
+      
 
       return Listener(
         onPointerMove: (_) => mapBloc.add(const OnMapFollowingEvent(isFollowing: false)),

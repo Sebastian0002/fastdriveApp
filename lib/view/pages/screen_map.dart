@@ -3,6 +3,7 @@ import 'package:fastdrive/view/widgets/widgets.dart';
 import 'package:fastdrive/view_model/Bloc/blocs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class ScreenMap extends StatefulWidget {
   const ScreenMap({super.key});
@@ -40,6 +41,13 @@ class _ScreenMapState extends State<ScreenMap> {
 
           return BlocBuilder<MapBloc, MapState>(
             builder: (context, mapState) {
+              
+              Map<String,Polyline> polylines = Map.from(mapState.polylines);
+
+              if(!mapState.isShowMyroute){
+                polylines.removeWhere((key,_) => key == 'myRoute');
+              }
+
               return SafeArea(
                 top: false,
                 child: SingleChildScrollView(
@@ -47,7 +55,7 @@ class _ScreenMapState extends State<ScreenMap> {
                   children: [
                     WidgetMap(
                       location: locationState.lastLocation!,
-                      polylines: mapState.polylines.values.toSet(),
+                      polylines: polylines.values.toSet(),
                     ),
                   ],
                 )),
@@ -56,15 +64,34 @@ class _ScreenMapState extends State<ScreenMap> {
           );
         },
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      floatingActionButton: const Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          ButtonFollowingLocation(),
-          SizedBox(height: 10),
-          ButtonCenterLocation(),
-        ],
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: const Padding(
+        padding: EdgeInsets.symmetric(horizontal: 10),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            ButtonFollowingLocation(),
+            SizedBox(height: 10),
+            _FloatingBtnRow(),
+          ],
+        ),
       ),
+    );
+  }
+}
+
+class _FloatingBtnRow extends StatelessWidget {
+  const _FloatingBtnRow();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        ButtonPolylines(),
+        ButtonCenterLocation(),
+      ],
     );
   }
 }

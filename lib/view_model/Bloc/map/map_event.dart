@@ -22,3 +22,8 @@ class UpdatePolylinesEvent extends MapEvent{
   final List<LatLng> userHistoryLocation;
   const UpdatePolylinesEvent({required this.userHistoryLocation});
 }
+
+class OnshowPolylines extends MapEvent{
+  final bool isShowPolylines;
+  const OnshowPolylines({required this.isShowPolylines});
+}
