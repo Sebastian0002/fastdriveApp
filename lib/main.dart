@@ -9,6 +9,7 @@ void main() {
       BlocProvider(create: (context) => GpsBloc()),
       BlocProvider(create: (context) => LocationBloc()),
       BlocProvider(create: (context) => MapBloc(locationBloc: context.read<LocationBloc>())),
+      BlocProvider(create: (context) => BottomsheetBloc()),
     ],
     child: const FastDriveApp(),
   ));

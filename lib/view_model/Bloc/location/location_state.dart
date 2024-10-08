@@ -7,8 +7,8 @@ sealed class LocationState extends Equatable {
   final List<LatLng> locationHistory;
   
   const LocationState({
-    required this.isFollowingUser,
-    required this.locationHistory,
+    this.isFollowingUser = false,
+    this.locationHistory = const [],
     this.lastLocation
   });
 
@@ -18,9 +18,9 @@ sealed class LocationState extends Equatable {
     List<LatLng>? locationHistory
   })=>  
   LocationInitState(
-      isFollowingUserinit: isFollowingUser ?? this.isFollowingUser,
-      lastLocationinit: lastLocation ?? this.lastLocation,
-      locationHistoryinit: locationHistory ?? this.locationHistory
+      isFollowingUser: isFollowingUser ?? this.isFollowingUser,
+      lastLocation: lastLocation ?? this.lastLocation,
+      locationHistory: locationHistory ?? this.locationHistory
     );
 
 
@@ -30,17 +30,10 @@ sealed class LocationState extends Equatable {
 
 final class LocationInitState extends LocationState {
 
-  final bool isFollowingUserinit;
-  final LatLng? lastLocationinit;
-  final List<LatLng> locationHistoryinit;
-
   const LocationInitState({
-    this.isFollowingUserinit = false,
-    this.lastLocationinit,
-    this.locationHistoryinit =  const []
-    }) : super(
-      isFollowingUser: isFollowingUserinit, 
-      lastLocation: lastLocationinit, 
-      locationHistory: locationHistoryinit);
+    super.isFollowingUser,
+    super.lastLocation,
+    super.locationHistory
+    });
 
 }

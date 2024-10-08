@@ -8,16 +8,16 @@ sealed class GpsState extends Equatable {
   bool get isAllGranted => isGpsEnabled && isGpsPermissionGranted;
   
   const GpsState({
-    required this.isGpsEnabled, 
-    required this.isGpsPermissionGranted
+    this.isGpsEnabled = false, 
+    this.isGpsPermissionGranted = false
   });
 
   GpsState copyWhit({
     bool ? isGpsEnabled,
     bool ? isGpsPermissionGranted
   }) => GpsInitState(
-    isGpsEnabledinitial: isGpsEnabled ?? this.isGpsEnabled,
-    isGpsPermissionGrantedinitial: isGpsPermissionGranted ?? this.isGpsPermissionGranted);
+    isGpsEnabled: isGpsEnabled ?? this.isGpsEnabled,
+    isGpsPermissionGranted: isGpsPermissionGranted ?? this.isGpsPermissionGranted);
 
   @override
   String toString() => "{isLocationEnabled: $isGpsEnabled, isLocationPermissionGranted: $isGpsPermissionGranted}";
@@ -27,9 +27,5 @@ sealed class GpsState extends Equatable {
 }
 
 class GpsInitState extends GpsState{
-  final bool? isGpsEnabledinitial;
-  final bool? isGpsPermissionGrantedinitial;
-
-  const GpsInitState({this.isGpsEnabledinitial, this.isGpsPermissionGrantedinitial}) : 
-    super(isGpsEnabled: isGpsEnabledinitial ?? false, isGpsPermissionGranted: isGpsPermissionGrantedinitial ?? false);
+  const GpsInitState({super.isGpsEnabled, super.isGpsPermissionGranted}); 
 }

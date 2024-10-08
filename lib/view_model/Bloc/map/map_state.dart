@@ -7,10 +7,10 @@ sealed class MapState extends Equatable {
   final Map<String, Polyline> polylines;
 
   const MapState({
-    required this.isInitMap, 
-    required this.isFollowingUser,
-    required this.polylines,
-    required this.isShowMyroute
+    this.isInitMap = false, 
+    this.isFollowingUser = false,
+    this.isShowMyroute = false,
+    this.polylines = const {},
   });
   
   MapState copyWith ({
@@ -20,10 +20,10 @@ sealed class MapState extends Equatable {
     Map<String, Polyline>? polylines,
   }) => 
     MapInitState(
-      isFollowingUserinit: isFollowingUser ?? this.isFollowingUser,
-      isInitMapinit: isInitMap ?? this.isInitMap,
-      polylinesinit: polylines ?? this.polylines,
-      isShowMyrouteinit: isShowMyroute ?? this.isShowMyroute
+      isFollowingUser: isFollowingUser ?? this.isFollowingUser,
+      isInitMap: isInitMap ?? this.isInitMap,
+      polylines: polylines ?? this.polylines,
+      isShowMyroute: isShowMyroute ?? this.isShowMyroute
     );
 
   @override
@@ -31,15 +31,11 @@ sealed class MapState extends Equatable {
 }
 
 final class MapInitState extends MapState {
-  final bool isInitMapinit;
-  final bool isFollowingUserinit;
-  final bool isShowMyrouteinit;
-  final Map<String, Polyline> polylinesinit;
   const MapInitState({
-    this.isFollowingUserinit = false,
-    this.isInitMapinit = false,
-    this.polylinesinit = const {},
-    this.isShowMyrouteinit = false
-  }) : super(isFollowingUser: isFollowingUserinit, isInitMap: isInitMapinit, polylines: polylinesinit, isShowMyroute: isShowMyrouteinit);
+    super.isFollowingUser,
+    super.isInitMap,
+    super.polylines,
+    super.isShowMyroute
+  });
 
 }
