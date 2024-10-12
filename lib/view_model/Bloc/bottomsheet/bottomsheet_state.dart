@@ -19,5 +19,4 @@ sealed class BottomsheetState extends Equatable {
 
 final class BottomsheetInitial extends BottomsheetState {
   const BottomsheetInitial({required super.screenOccupiedPercentage});
-
 }

@@ -1,0 +1,1 @@
+export 'package:fastdrive/view/delegates/search_destination_delegate.dart';

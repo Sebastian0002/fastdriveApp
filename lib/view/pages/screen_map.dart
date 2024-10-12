@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:fastdrive/view/widgets/widgets.dart';
 import 'package:fastdrive/view_model/Bloc/blocs.dart';
 import 'package:flutter/material.dart';
@@ -37,34 +38,34 @@ class _ScreenMapState extends State<ScreenMap> {
                 child: Text("Aguarde un momento"),
               );
             }
-
+    
             return BlocBuilder<MapBloc, MapState>(
               builder: (context, mapState) {
                 Map<String, Polyline> polylines = Map.from(mapState.polylines);
-
+    
                 if (!mapState.isShowMyroute) {
                   polylines.removeWhere((key, _) => key == 'myRoute');
                 }
-
-                return SafeArea(
-                  top: false,
-                  child: SingleChildScrollView(
-                      physics: const NeverScrollableScrollPhysics(),
-                      child: Stack(
-                        children: [
-                          WidgetMap(
-                            location: locationState.lastLocation!,
-                            polylines: polylines.values.toSet(),
-                          ),
-                          const _FloatingButtonsGroup()
-                        ],
-                      )),
-                );
+    
+                return SingleChildScrollView(
+                    physics: const NeverScrollableScrollPhysics(),
+                    child: Stack(
+                      children: [
+                        WidgetMap(
+                          location: locationState.lastLocation!,
+                          polylines: polylines.values.toSet(),
+                        ),
+                        const ManualMarker(),
+                        const _FloatingButtonsGroup(),
+                      ],
+                    ));
               },
             );
           },
         ),
-        bottomSheet: const WidgetSearchBottomSheet());
+        bottomSheet: Container(
+          color: Colors.transparent,
+          child: const WidgetSearchBottomSheet()));
   }
 }
 
@@ -87,13 +88,15 @@ class _FloatingButtonsGroup extends StatelessWidget {
               bottom: 10
             ),
             width: screenSize.width,
-            child: const Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                ButtonFollowingLocation(),
-                SizedBox(height: 10),
-                _FloatingBtnRow(),
-              ],
+            child: BounceInUp(
+              child: const Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  ButtonFollowingLocation(),
+                  SizedBox(height: 10),
+                  _FloatingBtnRow(),
+                ],
+              ),
             ),
           ),
         );

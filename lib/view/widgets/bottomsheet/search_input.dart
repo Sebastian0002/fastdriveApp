@@ -5,9 +5,12 @@ class _WidgetSearchInput extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final searchBloc = context.read<SeacrhBloc>();
     return GestureDetector(
-      onTap: (){
-        
+      onTap: () async{
+        final result = await showSearch(context: context, delegate: SearchDestinationDelegate());
+        if(result == null) return;
+        searchBloc.add(OnManualMarketEvent(isMarket: result.manual));
       },
       child: Container(
         width: double.infinity,

@@ -10,6 +10,7 @@ void main() {
       BlocProvider(create: (context) => LocationBloc()),
       BlocProvider(create: (context) => MapBloc(locationBloc: context.read<LocationBloc>())),
       BlocProvider(create: (context) => BottomsheetBloc()),
+      BlocProvider(create: (context) => SeacrhBloc()),
     ],
     child: const FastDriveApp(),
   ));

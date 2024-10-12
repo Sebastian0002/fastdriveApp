@@ -1,0 +1,1 @@
+export 'package:fastdrive/data/models/search_result.dart';
