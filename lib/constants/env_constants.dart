@@ -1,0 +1,1 @@
+const String mapboxToken = "pk.eyJ1IjoiamhvYW5uMDIyIiwiYSI6ImNtMXk1b3p0djA1ZTIya29oZHZ4cnRsc2oifQ.Rah2zqhCwTGTEDWlwtE7jw";

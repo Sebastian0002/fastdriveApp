@@ -3,7 +3,8 @@ import 'package:fastdrive/view_model/Bloc/blocs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-void main() {
+void main() async {
+
   runApp( MultiBlocProvider(
     providers: [
       BlocProvider(create: (context) => GpsBloc()),

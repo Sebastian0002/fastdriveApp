@@ -1,2 +1,2 @@
 
-export 'package:fastdrive/data/services/traffic/traffic_service.dart';
+export 'package:fastdrive/data/services/mapbox/traffic_service.dart';
