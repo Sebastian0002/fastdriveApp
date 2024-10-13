@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:fastdrive/data/models/models.dart';
 import 'package:fastdrive/view_model/Bloc/location/location_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -14,12 +15,15 @@ class MapBloc extends Bloc<MapEvent, MapState> {
   late StreamSubscription _subscription;
   final LocationBloc locationBloc;
   GoogleMapController? _mapController;
+  LatLng? mapCenter;
 
   MapBloc({required this.locationBloc}) : super(const MapInitState()) {
     on<OnMapInitEvent>(_onInitMap);
     on<OnMapFollowingEvent>(_onFollowing);
     on<UpdatePolylinesEvent>(_onUpdatePolylines);
     on<OnshowPolylines>((event,emit) => emit(state.copyWith(isShowMyroute: event.isShowPolylines)));
+    on<OnNewRoute>((event,emit) => emit(state.copyWith(polylines: event.routes)));
+    
 
     _subscription = locationBloc.stream.listen(( locationState ){
       if(locationState.lastLocation != null){
@@ -54,10 +58,27 @@ class MapBloc extends Bloc<MapEvent, MapState> {
       
       final currentRoute = Map<String,Polyline>.from(state.polylines);
       currentRoute['myRoute'] = myRoute;
-
       emit(state.copyWith(polylines: currentRoute));
+  }
+
+  Future drawRoute( RouteDestiny  route ) async { 
+
+    final myRoute = Polyline(
+      polylineId: const PolylineId("route"),
+      color: Colors.black,
+      width: 5,
+      startCap: Cap.roundCap,
+      endCap: Cap.roundCap,
+      points: route.polyline
+      );
+      
+      final currentRoute = Map<String,Polyline>.from(state.polylines);
+      currentRoute['route'] = myRoute;
+
+      add(OnNewRoute(routes: currentRoute));
 
   }
+
 
   void focusUser(){
     if(locationBloc.state.lastLocation == null) return;

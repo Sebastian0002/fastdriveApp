@@ -44,7 +44,7 @@ class SearchDestinationDelegate extends SearchDelegate <SearchResult>{
         final result = SearchResult(cancel: false, manual: true);
         return ListTile(
           leading: const Icon(Icons.location_on_outlined),
-          title: const Text("somewhere"),
+          title: const Text("set a manual marker"),
           onTap: (){
             close(context, result);
           },

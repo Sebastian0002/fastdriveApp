@@ -46,7 +46,7 @@ class _ScreenMapState extends State<ScreenMap> {
                 if (!mapState.isShowMyroute) {
                   polylines.removeWhere((key, _) => key == 'myRoute');
                 }
-    
+
                 return SingleChildScrollView(
                     physics: const NeverScrollableScrollPhysics(),
                     child: Stack(

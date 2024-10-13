@@ -1,6 +1,6 @@
 export 'package:fastdrive/view/widgets/manual_market.dart';
 
-export 'package:fastdrive/view/widgets/bottomsheet/search_buttomsheet.dart';
+export 'package:fastdrive/view/widgets/bottomsheet/search_bottomsheet.dart';
 export 'package:fastdrive/view/widgets/FloatingButtons/button_center_location.dart';
 export 'package:fastdrive/view/widgets/FloatingButtons/button_following_location.dart';
 export 'package:fastdrive/view/widgets/FloatingButtons/button_polylines.dart';

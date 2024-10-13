@@ -23,6 +23,11 @@ class UpdatePolylinesEvent extends MapEvent{
   const UpdatePolylinesEvent({required this.userHistoryLocation});
 }
 
+class OnNewRoute extends MapEvent{
+  final Map<String,Polyline> routes;
+  const OnNewRoute({required this.routes});
+}
+
 class OnshowPolylines extends MapEvent{
   final bool isShowPolylines;
   const OnshowPolylines({required this.isShowPolylines});

@@ -1,4 +1,4 @@
-part of 'search_buttomsheet.dart';
+part of 'search_bottomsheet.dart';
 
 class _WidgetSearchInput extends StatelessWidget {
   const _WidgetSearchInput();
