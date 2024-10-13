@@ -2,8 +2,14 @@ import 'package:fastdrive/view/pages/screens.dart';
 import 'package:fastdrive/view_model/Bloc/blocs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 void main() async {
+
+  await dotenv.load(
+    fileName: 'assets/.env',
+    isOptional: false
+  );
 
   runApp( MultiBlocProvider(
     providers: [

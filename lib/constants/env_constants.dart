@@ -1,1 +1,3 @@
-const String mapboxToken = "pk.eyJ1IjoiamhvYW5uMDIyIiwiYSI6ImNtMXk1b3p0djA1ZTIya29oZHZ4cnRsc2oifQ.Rah2zqhCwTGTEDWlwtE7jw";
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+final String mapboxToken = dotenv.get('MAPBOXTOKEN');
