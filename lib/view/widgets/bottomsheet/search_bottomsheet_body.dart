@@ -1,8 +1,6 @@
 part of 'search_bottomsheet.dart';
 
-
 class _SheetBodyManualRoute extends StatelessWidget {
-  
   const _SheetBodyManualRoute({
     required this.size,
     required this.controller,
@@ -13,11 +11,6 @@ class _SheetBodyManualRoute extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final SeacrhBloc seacrhBloc = context.read<SeacrhBloc>();
-    final LocationBloc locationBloc = context.read<LocationBloc>();
-    final MapBloc mapBloc = context.read<MapBloc>();
-    close() => Navigator.pop(context);
-
     return SingleChildScrollView(
       padding: const EdgeInsets.only(top: 15),
       controller: controller,
@@ -32,23 +25,13 @@ class _SheetBodyManualRoute extends StatelessWidget {
             child: MaterialButton(
               shape: const StadiumBorder(),
               color: Colors.black,
-              onPressed: () async {
-                  final start = locationBloc.state.lastLocation;
-                  if (start == null) return;
-                  final end = mapBloc.mapCenter;
-                  if (end == null) return;
-                  
-                  routeDialogLoading(context);
-                  final route  = await seacrhBloc.getCoors(start: start, end: end);
-                  await mapBloc.drawRoute(route);
-                  seacrhBloc.add(const OnManualMarketEvent(isMarket: false));
-                  close();
-              },
+              onPressed: () => pressAndSearchRoute(context),
               child: const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text("Ir a la ruta fijada.",
-                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400)),
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.w400)),
                   SizedBox(width: 10),
                   Icon(Icons.turn_right_outlined, color: Colors.white)
                 ],
@@ -87,6 +70,9 @@ class _SheetBodyHomeState extends State<_SheetBodyHome> {
 
   @override
   Widget build(BuildContext context) {
+    final searchBloc = context.read<SeacrhBloc>();
+    final placesHistory = searchBloc.state.placesHistory;
+
     return SingleChildScrollView(
       padding: const EdgeInsets.only(top: 15),
       controller: widget.scrollController,
@@ -112,17 +98,9 @@ class _SheetBodyHomeState extends State<_SheetBodyHome> {
                     return SizedBox(
                       height: (size.height - _widgetHeight) *
                           state.screenOccupiedPercentage,
-                      child: ListView.separated(
-                        separatorBuilder: (context, index) {
-                          return const Divider(
-                            height: 0,
-                          );
-                        },
-                        itemCount: objs.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return objs[index];
-                        },
-                      ),
+                      child: placesHistory.isEmpty
+                        ? const Text("Make your first search to see your history here")
+                        :_ListBodyBottomSheet(seacrhBloc: searchBloc,),
                     );
                   },
                 )
@@ -133,44 +111,40 @@ class _SheetBodyHomeState extends State<_SheetBodyHome> {
       ),
     );
   }
+}
 
-  final List<ListTile> objs = [
-    const ListTile(
-      leading: Icon(Icons.directions_car),
-      title: Text('Ruta'),
-      subtitle: Text('Tiempo estimado: 15 min'),
-    ),
-    const ListTile(
-      leading: Icon(Icons.directions_car),
-      title: Text('Ruta'),
-      subtitle: Text('Tiempo estimado: 15 min'),
-    ),
-    const ListTile(
-      leading: Icon(Icons.directions_car),
-      title: Text('Ruta'),
-      subtitle: Text('Tiempo estimado: 15 min'),
-    ),
-    const ListTile(
-      leading: Icon(Icons.directions_car),
-      title: Text('Ruta'),
-      subtitle: Text('Tiempo estimado: 15 min'),
-    ),
-    const ListTile(
-      leading: Icon(Icons.directions_car),
-      title: Text('Ruta'),
-      subtitle: Text('Tiempo estimado: 15 min'),
-    ),
-    const ListTile(
-      leading: Icon(Icons.directions_car),
-      title: Text('Ruta'),
-      subtitle: Text('Tiempo estimado: 15 min'),
-    ),
-    const ListTile(
-      leading: Icon(Icons.directions_car),
-      title: Text('Ruta'),
-      subtitle: Text('Tiempo estimado: 15 min'),
-    ),
-  ];
+class _ListBodyBottomSheet extends StatelessWidget {
+  const _ListBodyBottomSheet({
+    required this.seacrhBloc,
+  });
+
+  final SeacrhBloc seacrhBloc;
+
+  @override
+  Widget build(BuildContext context) {
+    final placesHistory = seacrhBloc.state.placesHistory;
+    return ListView.separated(
+          separatorBuilder: (context, index) {
+            return const Divider(
+              height: 0,
+            );
+          },
+          itemCount: placesHistory.length,
+          itemBuilder: (BuildContext context, int index) {
+            final place = placesHistory[index];
+            return ListTile(
+              leading: const Icon(Icons.location_on_outlined),
+              title: Text(place.text),
+              subtitle: Text(place.placeName),
+              onTap: () {
+                final destination = LatLng(place.center[1], place.center[0]);
+                pressAndSearchRoute(context, destination: destination);
+                seacrhBloc.triggerActionToCloseSheet();
+              },
+            );
+          },
+        );
+  }
 }
 
 class _TopContainer extends StatelessWidget {

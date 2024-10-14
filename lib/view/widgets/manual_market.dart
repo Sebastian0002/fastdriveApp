@@ -65,7 +65,7 @@ class _BackButton extends StatelessWidget {
           backgroundColor: Colors.white,
           child: IconButton(
               onPressed: () {
-                seacrhBloc.add(const OnManualMarketEvent(isMarket: false));
+                seacrhBloc.add(const OnManualMarkerEvent(isMarker: false));
               }, 
               icon: Icon(Icons.adaptive.arrow_back_rounded)),
         ),

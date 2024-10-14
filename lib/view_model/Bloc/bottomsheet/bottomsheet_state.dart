@@ -3,14 +3,15 @@ part of 'bottomsheet_bloc.dart';
 sealed class BottomsheetState extends Equatable {
   final double screenOccupiedPercentage;
   const BottomsheetState({
-    required this.screenOccupiedPercentage
+    required this.screenOccupiedPercentage,
   });
 
   BottomsheetState copyWith ({
-    double? screenOccupiedPercentage
+    double? screenOccupiedPercentage,
+    bool? doCloseBottomSheet
   }) => 
     BottomsheetInitial(
-      screenOccupiedPercentage: screenOccupiedPercentage ?? this.screenOccupiedPercentage
+      screenOccupiedPercentage: screenOccupiedPercentage ?? this.screenOccupiedPercentage,
     );
 
   @override

@@ -71,10 +71,10 @@ class MapBloc extends Bloc<MapEvent, MapState> {
       endCap: Cap.roundCap,
       points: route.polyline
       );
-      
+
       final currentRoute = Map<String,Polyline>.from(state.polylines);
       currentRoute['route'] = myRoute;
-
+      
       add(OnNewRoute(routes: currentRoute));
 
   }
@@ -82,7 +82,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
 
   void focusUser(){
     if(locationBloc.state.lastLocation == null) return;
-    CameraUpdate camera = CameraUpdate.newLatLngZoom(locationBloc.state.lastLocation!, 18);
+    CameraUpdate camera = CameraUpdate.newLatLngZoom(locationBloc.state.lastLocation!, 16);
     _mapController?.animateCamera(camera);
   }
 

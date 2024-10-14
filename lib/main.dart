@@ -1,4 +1,5 @@
 import 'package:fastdrive/view/pages/screens.dart';
+import 'package:fastdrive/view/themes/my_theme.dart';
 import 'package:fastdrive/view_model/Bloc/blocs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,9 +23,10 @@ class FastDriveApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
+      theme: MyTheme.mainTheme,
       debugShowCheckedModeBanner: false,
-      home: ScreenLoading()
+      home: const ScreenLoading()
     );
   }
 }

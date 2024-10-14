@@ -6,11 +6,11 @@ void routeDialogLoading(BuildContext context){
       barrierDismissible: false,
       builder: (_)=>
         const AlertDialog.adaptive(
-          title: Text("Un momento porfavor"),
+          title: Text("Please wait a moment"),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text("Calculadon ruta destino"),
+              Text("Calculating route to destination"),
               SizedBox(height: 10),
               CircularProgressIndicator.adaptive()
             ],

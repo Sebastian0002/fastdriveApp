@@ -10,5 +10,4 @@ sealed class BottomsheetEvent extends Equatable {
 class OnUpdateHeightBottomSheet extends BottomsheetEvent {
   final double screenOccupiedPercentage;
   const OnUpdateHeightBottomSheet({required this.screenOccupiedPercentage});
-
 }

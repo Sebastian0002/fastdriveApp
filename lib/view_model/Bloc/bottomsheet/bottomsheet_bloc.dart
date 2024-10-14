@@ -11,5 +11,4 @@ class BottomsheetBloc extends Bloc<BottomsheetEvent, BottomsheetState> {
       emit(state.copyWith(screenOccupiedPercentage: event.screenOccupiedPercentage));
     });
   }
-
 }

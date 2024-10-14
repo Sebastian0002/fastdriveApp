@@ -12,7 +12,6 @@ class _TrafficInterceptor extends Interceptor {
       "steps" : false,
       "access_token" : mapboxToken
     });
-
     super.onRequest(options, handler);
   }
 

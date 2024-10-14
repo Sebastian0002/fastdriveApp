@@ -5,15 +5,20 @@ class TrafficResponse {
     final List<Waypoint> waypoints;
     final String code;
     final String uuid;
+    final bool isEmpty;
 
     TrafficResponse({
         required this.routes,
         required this.waypoints,
         required this.code,
         required this.uuid,
+        this.isEmpty = false
     });
 
     factory TrafficResponse.fromJson(String str) => TrafficResponse.fromMap(json.decode(str));
+    
+    factory TrafficResponse.empty() => 
+      TrafficResponse(routes: [], waypoints: [], code: "", uuid: "", isEmpty: true);
 
     String toJson() => json.encode(toMap());
 

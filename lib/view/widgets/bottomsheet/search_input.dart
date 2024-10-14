@@ -6,11 +6,25 @@ class _WidgetSearchInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final searchBloc = context.read<SeacrhBloc>();
+
+    void doActions(SearchResult? result){
+      if(result == null) return;
+      
+      if(result.manual || result.destination != null){
+        searchBloc.triggerActionToCloseSheet();
+      }
+
+      searchBloc.add(OnManualMarkerEvent(isMarker: result.manual));
+      if(result.destination != null){
+        pressAndSearchRoute(context, destination: result.destination);
+        return;
+      } 
+    }
+
     return GestureDetector(
       onTap: () async{
         final result = await showSearch(context: context, delegate: SearchDestinationDelegate());
-        if(result == null) return;
-        searchBloc.add(OnManualMarketEvent(isMarket: result.manual));
+        doActions(result);
       },
       child: Container(
         width: double.infinity,
@@ -30,7 +44,7 @@ class _WidgetSearchInput extends StatelessWidget {
         child: const Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text("Busca tu ruta", style: TextStyle(color: Colors.black45)),
+            Text("Where to?", style: TextStyle(color: Colors.black45)),
             Icon(Icons.search)
           ],
         ),

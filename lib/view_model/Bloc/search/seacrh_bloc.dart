@@ -13,14 +13,20 @@ class SeacrhBloc extends Bloc<SeacrhEvent, SeacrhState> {
   TrafficService trafficService = TrafficService();
   
   SeacrhBloc() : super(const SeacrhInitState()) {
-    on<OnManualMarketEvent>((event, emit) {
-      emit(state.copyWith(displayManualMarker: event.isMarket));
+    on<OnManualMarkerEvent>((event, emit) {
+      emit(state.copyWith(displayManualMarker: event.isMarker));
     });
+    on<OnNewPlacesEvent>((event, emit) => emit(state.copyWith(places: event.places)));
+    on<OnSelectedPlace>((event, emit) => emit(state.copyWith(isSelectedPlace: event.isSelectedPlace)));
+    on<SavePlaceEvent>((event, emit) => emit(state.copyWith(placesHistory: [...state.placesHistory, event.place])));
+
   }
 
-  Future<RouteDestiny> getCoors({required LatLng start, required LatLng end}) async{
+  Future<RouteDestiny?> getCoors({required LatLng start, required LatLng end}) async{
 
     final response = await trafficService.getRoutebyLtLng(start: start, end: end);
+
+    if(response.isEmpty)return null;
 
     final polyline = 
       decodePolyline(response.routes[0].geometry, accuracyExponent: 6)
@@ -32,8 +38,18 @@ class SeacrhBloc extends Bloc<SeacrhEvent, SeacrhState> {
       duration: response.routes[0].duration, 
       distance: response.routes[0].distance
     );
+  }
 
+  Future getSearchResults( LatLng proximity, String query ) async{
+    final res = await trafficService.getSearchResults(proximity: proximity, query: query);
+    add(OnNewPlacesEvent(places: res));
+  }
 
+  triggerActionToCloseSheet(){
+    add(const OnSelectedPlace(isSelectedPlace: true));
+    Future.delayed(const Duration(milliseconds: 100)).then((_) {
+      add(const OnSelectedPlace(isSelectedPlace: false));
+    });
   }
 
 }
