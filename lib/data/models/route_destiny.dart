@@ -5,6 +5,9 @@ class RouteDestiny {
   final List<LatLng> polyline;
   final double duration;
   final double distance;
-  RouteDestiny({required this.polyline, required this.duration, required this.distance});
+  RouteDestiny({
+    required this.polyline, 
+    required this.duration, 
+    required this.distance});
 }
 

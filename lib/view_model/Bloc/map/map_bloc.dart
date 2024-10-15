@@ -22,7 +22,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     on<OnMapFollowingEvent>(_onFollowing);
     on<UpdatePolylinesEvent>(_onUpdatePolylines);
     on<OnshowPolylines>((event,emit) => emit(state.copyWith(isShowMyroute: event.isShowPolylines)));
-    on<OnNewRoute>((event,emit) => emit(state.copyWith(polylines: event.routes)));
+    on<OnNewRoute>((event,emit) => emit(state.copyWith(polylines: event.routes, markers: event.markers)));
     
 
     _subscription = locationBloc.stream.listen(( locationState ){
@@ -74,8 +74,26 @@ class MapBloc extends Bloc<MapEvent, MapState> {
 
       final currentRoute = Map<String,Polyline>.from(state.polylines);
       currentRoute['route'] = myRoute;
+
+      final startMarker = Marker(
+        markerId: const MarkerId('start'),
+        position: route.polyline.first,);
       
-      add(OnNewRoute(routes: currentRoute));
+      final finalMarker = Marker(
+        markerId: const MarkerId('end'),
+        position: route.polyline.last,
+        infoWindow: InfoWindow(
+          title: "",
+          snippet: ""
+        )
+        );
+      
+      final currentmarkers = Map<String,Marker>.from(state.markers);
+      currentmarkers['start'] = startMarker;
+      currentmarkers['ende'] = finalMarker;
+
+      
+      add(OnNewRoute(routes: currentRoute, markers: currentmarkers));
 
   }
 

@@ -54,6 +54,7 @@ class _ScreenMapState extends State<ScreenMap> {
                         WidgetMap(
                           location: locationState.lastLocation!,
                           polylines: polylines.values.toSet(),
+                          markers: mapState.markers.values.toSet(),
                         ),
                         const ManualMarker(),
                         const _FloatingButtonsGroup(),

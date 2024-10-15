@@ -9,8 +9,14 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 class WidgetMap extends StatelessWidget {
   final LatLng location;
   final Set<Polyline> polylines;
+  final Set<Marker> markers;
   
-  const WidgetMap({super.key, required this.location, required this.polylines});
+  const WidgetMap({
+    super.key, 
+    required this.location, 
+    required this.polylines, 
+    required this.markers
+  });
 
 
   @override
@@ -32,6 +38,7 @@ class WidgetMap extends StatelessWidget {
           child: GoogleMap(
             initialCameraPosition: initialCameraPosition,
             polylines: polylines,
+            markers: markers,
             compassEnabled: false,
             myLocationEnabled: true,
             zoomControlsEnabled: false,

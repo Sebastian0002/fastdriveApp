@@ -25,7 +25,8 @@ class UpdatePolylinesEvent extends MapEvent{
 
 class OnNewRoute extends MapEvent{
   final Map<String,Polyline> routes;
-  const OnNewRoute({required this.routes});
+  final Map<String, Marker> markers;
+  const OnNewRoute({required this.routes, required this.markers});
 }
 
 class OnshowPolylines extends MapEvent{
