@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:fastdrive/data/models/models.dart';
+import 'package:fastdrive/view/utils/widget_to_images.dart';
 import 'package:fastdrive/view_model/Bloc/location/location_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -13,6 +14,7 @@ part 'map_state.dart';
 class MapBloc extends Bloc<MapEvent, MapState> {
 
   late StreamSubscription _subscription;
+  late BitmapDescriptor  _finalMarkerIcon;
   final LocationBloc locationBloc;
   GoogleMapController? _mapController;
   LatLng? mapCenter;
@@ -37,9 +39,10 @@ class MapBloc extends Bloc<MapEvent, MapState> {
 
   }
 
-  _onInitMap(OnMapInitEvent event, Emitter<MapState> emit){
+  _onInitMap(OnMapInitEvent event, Emitter<MapState> emit) async{
     _mapController = event.controller;
     emit(state.copyWith(isInitMap: true));
+    _finalMarkerIcon = await getCircularSimpleCustomMarker(Colors.green.shade400);
   }
   
   _onFollowing(OnMapFollowingEvent event, Emitter<MapState> emit) => 
@@ -74,23 +77,19 @@ class MapBloc extends Bloc<MapEvent, MapState> {
 
       final currentRoute = Map<String,Polyline>.from(state.polylines);
       currentRoute['route'] = myRoute;
-
-      final startMarker = Marker(
-        markerId: const MarkerId('start'),
-        position: route.polyline.first,);
       
       final finalMarker = Marker(
         markerId: const MarkerId('end'),
         position: route.polyline.last,
+        icon: _finalMarkerIcon,
         infoWindow: InfoWindow(
-          title: "",
-          snippet: ""
+          title: route.endPlace.text,
+          snippet: route.endPlace.placeName
         )
         );
       
       final currentmarkers = Map<String,Marker>.from(state.markers);
-      currentmarkers['start'] = startMarker;
-      currentmarkers['ende'] = finalMarker;
+      currentmarkers['end'] = finalMarker;
 
       
       add(OnNewRoute(routes: currentRoute, markers: currentmarkers));

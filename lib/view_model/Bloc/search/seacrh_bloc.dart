@@ -25,6 +25,7 @@ class SeacrhBloc extends Bloc<SeacrhEvent, SeacrhState> {
   Future<RouteDestiny?> getCoors({required LatLng start, required LatLng end}) async{
 
     final response = await trafficService.getRoutebyLtLng(start: start, end: end);
+    final endPlace = await trafficService.getSearchResultsByCoors(place: end);
 
     if(response.isEmpty)return null;
 
@@ -36,7 +37,8 @@ class SeacrhBloc extends Bloc<SeacrhEvent, SeacrhState> {
     return RouteDestiny(
       polyline: polyline, 
       duration: response.routes[0].duration, 
-      distance: response.routes[0].distance
+      distance: response.routes[0].distance,
+      endPlace: endPlace
     );
   }
 

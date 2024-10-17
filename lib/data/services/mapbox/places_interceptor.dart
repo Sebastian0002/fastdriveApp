@@ -7,7 +7,6 @@ class _PlacesInterceptor extends Interceptor {
 
     options.queryParameters.addAll({
       "access_token" : mapboxToken,
-      "limit": 10
     });
 
     super.onRequest(options, handler);

@@ -42,11 +42,23 @@ class TrafficService {
 
     final url = '$_placesBaseUrl/$query.json';
     final res = await _places.get(url, queryParameters: {
-      'proximity': '${proximity.longitude},${proximity.latitude}'
+      'proximity': '${proximity.longitude},${proximity.latitude}',
+      "limit": 10
     });
     final data = PlacesResponse.fromMap(res.data);
     
     return data.features;
+  }
+ 
+  Future<Feature> getSearchResultsByCoors({ required LatLng place}) async{
+
+    final url = '$_placesBaseUrl/${place.longitude},${place.latitude}.json';
+    final res = await _places.get(url, queryParameters: {
+      "limit": 1
+    });
+    final data = PlacesResponse.fromMap(res.data);
+    
+    return data.features[0];
   }
 
 }
