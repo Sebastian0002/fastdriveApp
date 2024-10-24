@@ -33,3 +33,8 @@ class OnshowPolylines extends MapEvent{
   final bool isShowPolylines;
   const OnshowPolylines({required this.isShowPolylines});
 }
+
+class OnMoveMapEvent extends MapEvent{
+  final CameraPosition? actualPosition;
+  const OnMoveMapEvent({required this.actualPosition});
+}

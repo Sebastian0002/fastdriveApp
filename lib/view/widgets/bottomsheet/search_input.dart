@@ -13,8 +13,8 @@ class _WidgetSearchInput extends StatelessWidget {
       if(result.manual || result.destination != null){
         searchBloc.triggerActionToCloseSheet();
       }
-
       searchBloc.add(OnManualMarkerEvent(isMarker: result.manual));
+      
       if(result.destination != null){
         pressAndSearchRoute(context, destination: result.destination);
         return;

@@ -44,7 +44,7 @@ class WidgetMap extends StatelessWidget {
             zoomControlsEnabled: false,
             myLocationButtonEnabled: false,
             onMapCreated: (controller) => mapBloc.add(OnMapInitEvent(controller: controller)),
-            onCameraMove: (position) => mapBloc.mapCenter = position.target,
+            onCameraMove: (position) => mapBloc.add(OnMoveMapEvent(actualPosition: position)),
             style: jsonEncode(uberTheme),
           ),
         ),

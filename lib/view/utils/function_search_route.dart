@@ -14,7 +14,7 @@ void pressAndSearchRoute(BuildContext context, {LatLng? destination}) async{
 
       final start = locationBloc.state.lastLocation;
       if (start == null) return;
-      final end = destination ?? mapBloc.mapCenter;
+      final end = destination ?? mapBloc.state.actualPosition?.target;
       if (end == null) return;
 
       routeDialogLoading(context);

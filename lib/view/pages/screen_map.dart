@@ -1,4 +1,5 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:fastdrive/view/widgets/FloatingButtons/button_north.dart';
 import 'package:fastdrive/view/widgets/widgets.dart';
 import 'package:fastdrive/view_model/Bloc/blocs.dart';
 import 'package:flutter/material.dart';
@@ -58,6 +59,7 @@ class _ScreenMapState extends State<ScreenMap> {
                         ),
                         const ManualMarker(),
                         const _FloatingButtonsGroup(),
+                        const TopButtons()
                       ],
                     ));
               },

@@ -17,17 +17,13 @@ class ButtonCenterLocation extends StatelessWidget {
         highlightColor: Colors.black12,
         color: Colors.black,
         icon: const Icon(Icons.gps_fixed_outlined),
-        onPressed: (){
-          final userLocation = mapBloc.locationBloc.state.lastLocation;          
-          if(userLocation == null){
+        onPressed: (){          
+          if(mapBloc.locationBloc.state.lastLocation == null){
             ScaffoldMessenger.of(context).showSnackBar(CustomSnackBar( message: "No se encontro ubicación"));
             return;
           }
-
           mapBloc.focusUser();
-
-        },  
-        
+        },
         ),
     );
   }

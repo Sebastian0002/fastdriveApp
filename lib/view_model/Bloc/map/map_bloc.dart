@@ -17,7 +17,6 @@ class MapBloc extends Bloc<MapEvent, MapState> {
   late BitmapDescriptor  _finalMarkerIcon;
   final LocationBloc locationBloc;
   GoogleMapController? _mapController;
-  LatLng? mapCenter;
 
   MapBloc({required this.locationBloc}) : super(const MapInitState()) {
     on<OnMapInitEvent>(_onInitMap);
@@ -25,6 +24,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
     on<UpdatePolylinesEvent>(_onUpdatePolylines);
     on<OnshowPolylines>((event,emit) => emit(state.copyWith(isShowMyroute: event.isShowPolylines)));
     on<OnNewRoute>((event,emit) => emit(state.copyWith(polylines: event.routes, markers: event.markers)));
+    on<OnMoveMapEvent>(_onMoveCamera);
     
 
     _subscription = locationBloc.stream.listen(( locationState ){
@@ -48,8 +48,14 @@ class MapBloc extends Bloc<MapEvent, MapState> {
   _onFollowing(OnMapFollowingEvent event, Emitter<MapState> emit) => 
     emit(state.copyWith(isFollowingUser: event.isFollowing));
   
+  
+  _onMoveCamera(OnMoveMapEvent event, Emitter<MapState> emit) {
+    if(event.actualPosition == null) return;
+    emit(state.copyWith(actualPosition: event.actualPosition));
+  }
+  
   _onUpdatePolylines(UpdatePolylinesEvent event, Emitter<MapState> emit){
-    
+
     final myRoute = Polyline(
       polylineId: const PolylineId("myRoute"),
       color: Colors.black,
@@ -89,9 +95,7 @@ class MapBloc extends Bloc<MapEvent, MapState> {
         );
       
       final currentmarkers = Map<String,Marker>.from(state.markers);
-      currentmarkers['end'] = finalMarker;
-
-      
+      currentmarkers['end'] = finalMarker;      
       add(OnNewRoute(routes: currentRoute, markers: currentmarkers));
 
   }
@@ -100,6 +104,13 @@ class MapBloc extends Bloc<MapEvent, MapState> {
   void focusUser(){
     if(locationBloc.state.lastLocation == null) return;
     CameraUpdate camera = CameraUpdate.newLatLngZoom(locationBloc.state.lastLocation!, 16);
+    _mapController?.animateCamera(camera);
+  }
+  
+  void focusNorth()async{
+    if (state.actualPosition == null || _mapController == null) return;
+    final CameraPosition cameraPositionNorth = CameraPosition(target:state.actualPosition!.target, bearing: 0, zoom: state.actualPosition!.zoom);
+    CameraUpdate camera = CameraUpdate.newCameraPosition(cameraPositionNorth);
     _mapController?.animateCamera(camera);
   }
 
