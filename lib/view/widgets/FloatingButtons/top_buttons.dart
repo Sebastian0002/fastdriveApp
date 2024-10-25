@@ -1,4 +1,5 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:fastdrive/view/widgets/bottomsheet/map/map_bottomsheet.dart';
 import 'package:fastdrive/view_model/Bloc/blocs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -53,11 +54,8 @@ class _TopButtonsState extends State<TopButtons> {
               height: !openCompass
                   ? _widgetHeightMap
                   : _widgetHeightMap + _widgetHeightCompass,
-              onEnd: () {
-                setState(() {
-                  if(openCompass) isOffStage=false;
-                });
-              },
+              onEnd: () =>
+                setState(() => openCompass?isOffStage = false:null),
               decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(15),
@@ -75,7 +73,7 @@ class _TopButtonsState extends State<TopButtons> {
                     highlightColor: Colors.black12,
                     color: Colors.black,
                     icon: const Icon(Icons.map_rounded),
-                    onPressed: () {},
+                    onPressed: () => mapModalSheet(context: context),
                   ),
                   Offstage(
                     offstage: isOffStage,

@@ -11,20 +11,32 @@ class ButtonFollowingLocation extends StatelessWidget {
   Widget build(BuildContext context) {
     final mapBloc = context.read<MapBloc>();
 
-    return CircleAvatar(
-      backgroundColor: Colors.white,
-      child: BlocBuilder<MapBloc, MapState>(
-        builder: (_, state) {
-          return IconButton(
-          highlightColor: Colors.black12,
-          color: state.isFollowingUser ? Colors.blueAccent : Colors.black,
-          icon: Icon(state.isFollowingUser ? Icons.directions_run_rounded : Icons.emoji_people_rounded ),
-          onPressed: (){
-              mapBloc.add(const OnMapFollowingEvent(isFollowing: true));
-              mapBloc.focusUser();
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(100),
+        boxShadow: const [
+          BoxShadow(
+            blurRadius: 4,
+            color: Colors.black54,
+            offset: Offset(0, 3)
+          )
+        ]
+      ),
+      child: CircleAvatar(
+        backgroundColor: Colors.white,
+        child: BlocBuilder<MapBloc, MapState>(
+          builder: (_, state) {
+            return IconButton(
+            highlightColor: Colors.black12,
+            color: state.isFollowingUser ? Colors.blueAccent : Colors.black,
+            icon: Icon(state.isFollowingUser ? Icons.directions_run_rounded : Icons.emoji_people_rounded ),
+            onPressed: (){
+                mapBloc.add(const OnMapFollowingEvent(isFollowing: true));
+                mapBloc.focusUser();
+            },
+            );
           },
-          );
-        },
+        ),
       ),
     );
   }

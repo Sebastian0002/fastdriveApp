@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:fastdrive/constants/map_list_style.dart';
 import 'package:fastdrive/data/models/models.dart';
 import 'package:fastdrive/view/utils/widget_to_images.dart';
 import 'package:fastdrive/view_model/Bloc/location/location_bloc.dart';
@@ -18,13 +19,14 @@ class MapBloc extends Bloc<MapEvent, MapState> {
   final LocationBloc locationBloc;
   GoogleMapController? _mapController;
 
-  MapBloc({required this.locationBloc}) : super(const MapInitState()) {
+  MapBloc({required this.locationBloc}) : super(MapInitState(listCardMapModel: listStyleMap)) {
     on<OnMapInitEvent>(_onInitMap);
     on<OnMapFollowingEvent>(_onFollowing);
     on<UpdatePolylinesEvent>(_onUpdatePolylines);
     on<OnshowPolylines>((event,emit) => emit(state.copyWith(isShowMyroute: event.isShowPolylines)));
     on<OnNewRoute>((event,emit) => emit(state.copyWith(polylines: event.routes, markers: event.markers)));
     on<OnMoveMapEvent>(_onMoveCamera);
+    on<OnMapStyleChange>(_onNewMapSelected);
     
 
     _subscription = locationBloc.stream.listen(( locationState ){
@@ -48,10 +50,26 @@ class MapBloc extends Bloc<MapEvent, MapState> {
   _onFollowing(OnMapFollowingEvent event, Emitter<MapState> emit) => 
     emit(state.copyWith(isFollowingUser: event.isFollowing));
   
-  
   _onMoveCamera(OnMoveMapEvent event, Emitter<MapState> emit) {
     if(event.actualPosition == null) return;
     emit(state.copyWith(actualPosition: event.actualPosition));
+  }
+  
+  _onNewMapSelected(OnMapStyleChange event, Emitter<MapState> emit) {
+    if(state.listCardMapModel.isEmpty) return;
+    final List<CardMapModel> list = [];
+
+    for(var map in state.listCardMapModel) {      
+      if(map == event.cardMapModelSelected){
+        if(map.isSelected)return;
+        list.add( map.copyWith(isSelected: true));
+      }
+      else{
+        list.add(map.copyWith(isSelected: false));
+      }
+    }
+    
+    emit(state.copyWith(listCardMapModel: list));
   }
   
   _onUpdatePolylines(UpdatePolylinesEvent event, Emitter<MapState> emit){

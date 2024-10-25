@@ -1,6 +1,3 @@
-import 'dart:convert';
-
-import 'package:fastdrive/view/themes/mapThemes/themes.dart';
 import 'package:fastdrive/view_model/Bloc/blocs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,12 +7,14 @@ class WidgetMap extends StatelessWidget {
   final LatLng location;
   final Set<Polyline> polylines;
   final Set<Marker> markers;
+  final String mapStyle;
   
   const WidgetMap({
     super.key, 
     required this.location, 
     required this.polylines, 
-    required this.markers
+    required this.markers,
+    required this.mapStyle,
   });
 
 
@@ -27,8 +26,6 @@ class WidgetMap extends StatelessWidget {
     CameraPosition initialCameraPosition = CameraPosition(
       target: location,
       zoom: 15);
-
-      
 
       return Listener(
         onPointerMove: (_) => mapBloc.add(const OnMapFollowingEvent(isFollowing: false)),
@@ -45,7 +42,7 @@ class WidgetMap extends StatelessWidget {
             myLocationButtonEnabled: false,
             onMapCreated: (controller) => mapBloc.add(OnMapInitEvent(controller: controller)),
             onCameraMove: (position) => mapBloc.add(OnMoveMapEvent(actualPosition: position)),
-            style: jsonEncode(uberTheme),
+            style: mapStyle,
           ),
         ),
       );

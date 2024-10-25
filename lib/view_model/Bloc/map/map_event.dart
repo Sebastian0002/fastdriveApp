@@ -38,3 +38,8 @@ class OnMoveMapEvent extends MapEvent{
   final CameraPosition? actualPosition;
   const OnMoveMapEvent({required this.actualPosition});
 }
+
+class OnMapStyleChange extends MapEvent{
+  final CardMapModel cardMapModelSelected;
+  const OnMapStyleChange({required this.cardMapModelSelected});
+}

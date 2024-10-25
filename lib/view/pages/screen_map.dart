@@ -1,5 +1,4 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:fastdrive/view/widgets/FloatingButtons/button_north.dart';
 import 'package:fastdrive/view/widgets/widgets.dart';
 import 'package:fastdrive/view_model/Bloc/blocs.dart';
 import 'package:flutter/material.dart';
@@ -47,6 +46,7 @@ class _ScreenMapState extends State<ScreenMap> {
                 if (!mapState.isShowMyroute) {
                   polylines.removeWhere((key, _) => key == 'myRoute');
                 }
+                final mapStyle = mapState.listCardMapModel.where((e) => e.isSelected).single.jsonMapStyle;
 
                 return SingleChildScrollView(
                     physics: const NeverScrollableScrollPhysics(),
@@ -56,6 +56,7 @@ class _ScreenMapState extends State<ScreenMap> {
                           location: locationState.lastLocation!,
                           polylines: polylines.values.toSet(),
                           markers: mapState.markers.values.toSet(),
+                          mapStyle: mapStyle,
                         ),
                         const ManualMarker(),
                         const _FloatingButtonsGroup(),

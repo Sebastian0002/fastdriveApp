@@ -5,6 +5,7 @@ sealed class MapState extends Equatable {
   final bool isFollowingUser;
   final bool isShowMyroute;
   final CameraPosition? actualPosition;
+  final List<CardMapModel> listCardMapModel;
   final Map<String, Polyline> polylines;
   final Map<String, Marker> markers;
 
@@ -13,6 +14,7 @@ sealed class MapState extends Equatable {
     this.isFollowingUser = false,
     this.isShowMyroute = false,
     this.actualPosition,
+    required this.listCardMapModel,
     this.polylines = const {},
     this.markers = const {},
   });
@@ -22,6 +24,7 @@ sealed class MapState extends Equatable {
     bool? isFollowingUser,
     bool? isShowMyroute,
     CameraPosition? actualPosition,
+    List<CardMapModel>? listCardMapModel,
     Map<String, Polyline>? polylines,
     Map<String, Marker>? markers,
   }) => 
@@ -30,12 +33,13 @@ sealed class MapState extends Equatable {
       isInitMap: isInitMap ?? this.isInitMap,
       isShowMyroute: isShowMyroute ?? this.isShowMyroute,
       actualPosition: actualPosition ?? this.actualPosition,
+      listCardMapModel: listCardMapModel ?? this.listCardMapModel,
       polylines: polylines ?? this.polylines,
       markers: markers ?? this.markers,
     );
 
   @override
-  List<Object?> get props => [isInitMap, isFollowingUser, polylines, isShowMyroute, markers, actualPosition];
+  List<Object?> get props => [isInitMap, isFollowingUser, polylines, isShowMyroute, markers, actualPosition, listCardMapModel];
 }
 
 final class MapInitState extends MapState {
@@ -44,6 +48,7 @@ final class MapInitState extends MapState {
     super.isInitMap,
     super.isShowMyroute,
     super.actualPosition,
+    required super.listCardMapModel,
     super.polylines,
     super.markers,
   });
