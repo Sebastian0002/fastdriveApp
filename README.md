@@ -2,7 +2,7 @@
 
 Hey buddies, here we go to see a mobile application built with Flutter that uses geolocation, Google APIs, Mapbox APIs, and more.
 
-This application was built using good programming practices such as MVVM architecture, SOLID principles, and design patterns. It also implements BLoC state management and uses Flutter channels to listen for geolocation permissions with event channels.
+This application was built using good programming practices such as MVVM architecture, SOLID principles, and design patterns. It also implements BLoC state management and uses Flutter channels to listen for geolocation permissions with event channels and more!!.
 
 # Features:
 
