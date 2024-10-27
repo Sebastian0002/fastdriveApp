@@ -35,7 +35,7 @@ class _ScreenMapState extends State<ScreenMap> {
           builder: (context, locationState) {
             if (locationState.lastLocation == null) {
               return const Center(
-                child: Text("Aguarde un momento"),
+                child: Text("Loading...\nplease wait a moment.", textAlign: TextAlign.center),
               );
             }
     
