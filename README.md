@@ -12,4 +12,4 @@ There are some features that this project has:
 2. User location tracking, center the map on their location. 🚗
 3. Show polylines where the user has passed and display polylines for a specific marker route. 🛣️
 4. Search for nearby places based on the current location and display the most optimal route to that specific place. It also includes a manual marker for a custom location. 🏠
-5. Additional map functionalities and styles.
+5. Additional map functionalities and styles. 🗺️
