@@ -22,3 +22,4 @@ There are some features that this project has:
 4. Geolocator.
 5. Permission handler.
 6. Mapbox.
+7. Google Maps Flutter Plugin.
